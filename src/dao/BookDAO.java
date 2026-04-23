@@ -6,12 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DAO for Book CRUD operations including edit, delete, and search by code.
- */
+
 public class BookDAO {
 
-    // ─── Add a new book ───────────────────────────────────────────────────────
+    //  Add a new book
     public boolean addBook(Book book) {
         String sql = "INSERT INTO books (book_code, title, author, quantity) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
@@ -24,12 +22,12 @@ public class BookDAO {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("❌ Error adding book: " + e.getMessage());
+            System.err.println(" Error adding book: " + e.getMessage());
             return false;
         }
     }
 
-    // ─── Update an existing book ──────────────────────────────────────────────
+    //  Update an existing book 
     public boolean updateBook(Book book) {
         String sql = "UPDATE books SET book_code=?, title=?, author=?, quantity=? WHERE id=?";
         try (Connection conn = DBConnection.getConnection();
@@ -43,12 +41,12 @@ public class BookDAO {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("❌ Error updating book: " + e.getMessage());
+            System.err.println(" Error updating book: " + e.getMessage());
             return false;
         }
     }
 
-    // ─── Delete a book ────────────────────────────────────────────────────────
+    //  Delete a book 
     public boolean deleteBook(int bookId) {
         String sql = "DELETE FROM books WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -58,12 +56,12 @@ public class BookDAO {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("❌ Error deleting book: " + e.getMessage());
+            System.err.println(" Error deleting book: " + e.getMessage());
             return false;
         }
     }
 
-    // ─── Get all books ────────────────────────────────────────────────────────
+    //  Get all books 
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books ORDER BY book_code";
@@ -75,12 +73,12 @@ public class BookDAO {
                 books.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error fetching books: " + e.getMessage());
+            System.err.println(" Error fetching books: " + e.getMessage());
         }
         return books;
     }
 
-    // ─── Get available books (qty > 0) ────────────────────────────────────────
+    //  Get available books (qty > 0) 
     public List<Book> getAvailableBooks() {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books WHERE quantity > 0 ORDER BY book_code";
@@ -92,12 +90,12 @@ public class BookDAO {
                 books.add(mapRow(rs));
             }
         } catch (SQLException e) {
-            System.err.println("❌ Error fetching available books: " + e.getMessage());
+            System.err.println(" Error fetching available books: " + e.getMessage());
         }
         return books;
     }
 
-    // ─── Search books ─────────────────────────────────────────────────────────
+    //  Search books 
     public List<Book> searchBooks(String keyword) {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books WHERE title LIKE ? OR author LIKE ? OR book_code LIKE ?";
@@ -110,12 +108,12 @@ public class BookDAO {
             while (rs.next()) books.add(mapRow(rs));
 
         } catch (SQLException e) {
-            System.err.println("❌ Error searching books: " + e.getMessage());
+            System.err.println(" Error searching books: " + e.getMessage());
         }
         return books;
     }
 
-    // ─── Find a book by its unique code ──────────────────────────────────────
+    // Find a book by its unique code
     public Book getBookByCode(String code) {
         String sql = "SELECT * FROM books WHERE book_code = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -126,12 +124,12 @@ public class BookDAO {
             if (rs.next()) return mapRow(rs);
 
         } catch (SQLException e) {
-            System.err.println("❌ Error finding book by code: " + e.getMessage());
+            System.err.println(" Error finding book by code: " + e.getMessage());
         }
         return null;
     }
 
-    // ─── Get book by ID ───────────────────────────────────────────────────────
+    //  Get book by ID 
     public Book getBookById(int id) {
         String sql = "SELECT * FROM books WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -142,12 +140,12 @@ public class BookDAO {
             if (rs.next()) return mapRow(rs);
 
         } catch (SQLException e) {
-            System.err.println("❌ Error finding book by id: " + e.getMessage());
+            System.err.println(" Error finding book by id: " + e.getMessage());
         }
         return null;
     }
 
-    // ─── Update quantity only ─────────────────────────────────────────────────
+    //  Update quantity only
     public boolean updateQuantity(int bookId, int qty) {
         String sql = "UPDATE books SET quantity = ? WHERE id = ?";
         try (Connection conn = DBConnection.getConnection();
@@ -157,12 +155,12 @@ public class BookDAO {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.err.println("❌ Error updating quantity: " + e.getMessage());
+            System.err.println(" Error updating quantity: " + e.getMessage());
             return false;
         }
     }
 
-    // ─── Helper: map ResultSet row to Book ───────────────────────────────────
+    
     private Book mapRow(ResultSet rs) throws SQLException {
         return new Book(
             rs.getInt("id"),
