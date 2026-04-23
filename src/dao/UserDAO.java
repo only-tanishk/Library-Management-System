@@ -6,12 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * DAO for user authentication, signup, and admin queries.
- */
+
 public class UserDAO {
 
-    // ─── Login: returns User if credentials match, else null ──────────────────
+    // --Login --
     public User login(String username, String password) {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (Connection conn = DBConnection.getConnection();
